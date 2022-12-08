@@ -1,6 +1,7 @@
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.InputStream;
+import java.io.IOException;
 
 /**
  * A class to determine the energy of a given pixel in a picture to be resized.
@@ -10,43 +11,131 @@ import java.io.InputStream;
 
 public class EnergyDetermination
 {
-    private String fileName;
+    private double maxEnergy;
+    private double minEnergy;
+    private int maxWidth;
+    private int maxHeight;
+    private final int MAX_ENERGY = 390150;
 
+    public EnergyDetermination() {}
 
-    public EnergyDetermination(String fileName) {
-        this.fileName = fileName;
+    public BufferedImage getEnergyImageFromFile(String fileName) throws Exception
+    {
+        BufferedImage originalImage = getInputStream(fileName);
+        Color[][] readImage = readImage(originalImage);
+        double[][] brightness = calculateEnergy(readImage);
+        Color[][] energyArray = convertToEnergyArray(brightness);
+        return convertToEnergyImage(energyArray);
     }
 
-    private BufferedImage getInputStream() throws Exception
+    // todo: set this up for testing
+    public BufferedImage getEnergyImageFromArray(String fileName) throws Exception
+    {
+        BufferedImage originalImage = getInputStream(fileName);
+        Color[][] readImage = readImage(originalImage);
+        double[][] brightness = calculateEnergy(readImage);
+        Color[][] energyArray = convertToEnergyArray(brightness);
+        return convertToEnergyImage(energyArray);
+    }
+
+    private BufferedImage getInputStream(String fileName) throws IOException
     {
         return ImageIO.read(EnergyDetermination.class.getResourceAsStream(fileName));
     }
 
+    private Color[][] readImage(BufferedImage originalImage)
+    {
+        maxWidth = originalImage.getWidth();
+        maxHeight = originalImage.getHeight();
+        Color[][] colors = new Color[maxWidth][maxHeight];
+        for (int i = 0; i < colors.length; i++)
+        {
+            for (int j = 0; j < colors[0].length; j++)
+            {
+                colors[i][j] = new Color(originalImage.getRGB(i, j));
+            }
+        }
+        return colors;
+    }
 
-    // Classes:
-    // ImageIO - read image
-    // BufferedImage - read out from ImageIO read method
-    // Color - constructed from integer that comes from BufferedImage's getRGB(x, y) method
+    private double[][] calculateEnergy(Color[][] image)
+    {
+        maxEnergy = Double.MIN_VALUE;
+        minEnergy = Double.MAX_VALUE;
 
-    // Energy algorithm:
-    // Given a pixel, look at pixels (1) U (2) B (3) R (4) L
-    // Compare top to bottom and left to right
-    // Sum of comparison is energy value for middle pixel
-    // Border energy is maximum energy
+        double[][] brightness = new double[maxWidth][maxHeight];
+        for (int i = 0; i < maxWidth; i++)
+        {
+            for (int j = 0; j < maxHeight; j++)
+            {
+                double energy;
+                if (i == 0
+                    || j == 0
+                    || i == maxWidth - 1
+                    || j == maxHeight - 1)
+                {
+                    energy = MAX_ENERGY;
+                }
+                else
+                {
+                    Color left = image[i-1][j];
+                    Color right = image[i+1][j];
+                    Color upper = image[i][j-1];
+                    Color lower = image[i][j+1];
+                    energy = Math.pow(upper.getRed() - lower.getRed(), 2)
+                            + Math.pow(upper.getGreen() - lower.getGreen(), 2)
+                            + Math.pow(upper.getBlue() - lower.getBlue(), 2)
+                            + Math.pow(left.getRed() - right.getRed(), 2)
+                            + Math.pow(left.getGreen() - right.getGreen(), 2)
+                            + Math.pow(left.getBlue() - right.getBlue(), 2);
+                }
+                brightness[i][j] = energy;
+                maxEnergy = Math.max(maxEnergy, energy);
+                minEnergy = Math.min(minEnergy, energy);
+            }
+        }
+        return brightness;
+    }
 
-    // Energy formula:
-    // A = (U.getRed() - D.getRed()) ^ 2 + (green - green)^2 + (blue - blue)^2
-    // B = same for L - R
-    // E = A + B
+    private Color[][] convertToEnergyArray(double[][] brightness)
+    {
+        Color[][] energy = new Color[maxWidth][maxHeight];
 
-    // Border: X or Y are 0 or MAX_HEIGHT - 1 or MAX_WIDTH - 1
-    // E = 255 ^ 3 = 16 581 375 (OR) (255^2) * 6 = 390 150
+        for (int i = 0; i < maxWidth; i++)
+        {
+            for (int j = 0; j < maxHeight; j++)
+            {
+                int color;
+                if (i == 0
+                        || j == 0
+                        || i == maxWidth - 1
+                        || j == maxHeight - 1)
+                {
+                    color = 255;
+                }
+                else
+                {
+                    color = (int) (((brightness[i][j] - minEnergy) / (maxEnergy - minEnergy)) * 255);
+                }
+                energy[i][j] = new Color(color, color, color);
+            }
+        }
 
-    // Energy image: Brightness = ((E - minEnergy) / (maxEnergy - minEnergy)) * 255
-    // Max not including the borders
-    // Color = new Color(Brightness, Brightness, Brightness)
-    // borders are 255
-    // feed color array back into buffered image, display it
+        return energy;
+    }
+
+    private BufferedImage convertToEnergyImage(Color[][] energyArray)
+    {
+        BufferedImage energyImage = new BufferedImage(maxWidth, maxHeight, BufferedImage.TYPE_INT_RGB);
+        for (int i = 0; i < maxWidth; i++)
+        {
+            for (int j = 0; j < maxHeight; j++)
+            {
+                energyImage.setRGB(i, j, energyArray[i][j].getRGB());
+            }
+        }
+        return energyImage;
+    }
 
     // Test with small 2D pixel array - ex. 3x3
     // Make it an int[y][x] or a Color[y][x]
