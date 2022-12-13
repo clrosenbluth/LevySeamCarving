@@ -14,7 +14,7 @@ public class EnergyDetermination
 {
     private double maxEnergy;
     private double minEnergy;
-    private final int MAX_ENERGY = 390150;
+    private final int maxPossibleEnergy = 390150;
 
     public EnergyDetermination() {}
 
@@ -83,14 +83,13 @@ public class EnergyDetermination
                     || i == maxWidth - 1
                     || j == maxHeight - 1)
                 {
-                    energy = MAX_ENERGY;
-                }
-                else
+                    energy = maxPossibleEnergy;
+                } else
                 {
-                    Color left = image[i-1][j];
-                    Color right = image[i+1][j];
-                    Color upper = image[i][j-1];
-                    Color lower = image[i][j+1];
+                    Color left = image[i - 1][j];
+                    Color right = image[i + 1][j];
+                    Color upper = image[i][j - 1];
+                    Color lower = image[i][j + 1];
                     energy = Math.pow(upper.getRed() - lower.getRed(), 2)
                             + Math.pow(upper.getGreen() - lower.getGreen(), 2)
                             + Math.pow(upper.getBlue() - lower.getBlue(), 2)
@@ -123,10 +122,11 @@ public class EnergyDetermination
                         || j == maxHeight - 1)
                 {
                     color = 255;
-                }
-                else
+                } else
                 {
-                    color = (int) (((brightness[i][j] - minEnergy) / (maxEnergy - minEnergy)) * 255);
+                    color = (int) (((brightness[i][j] - minEnergy)
+                            / (maxEnergy - minEnergy))
+                            * 255);
                 }
                 energy[i][j] = new Color(color, color, color);
             }
@@ -139,7 +139,10 @@ public class EnergyDetermination
     {
         int maxWidth = energyArray.length;
         int maxHeight = energyArray[0].length;
-        BufferedImage energyImage = new BufferedImage(maxWidth, maxHeight, BufferedImage.TYPE_INT_RGB);
+        BufferedImage energyImage = new BufferedImage(
+                maxWidth,
+                maxHeight,
+                BufferedImage.TYPE_INT_RGB);
         for (int i = 0; i < maxWidth; i++)
         {
             for (int j = 0; j < maxHeight; j++)
@@ -149,8 +152,4 @@ public class EnergyDetermination
         }
         return energyImage;
     }
-
-    // Test with small 2D pixel array - ex. 3x3
-    // Make it an int[y][x] or a Color[y][x]
-    // Make sure it's a proper 3x3 array of energy values when finished
 }

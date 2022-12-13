@@ -63,28 +63,28 @@ class EnergyDeterminationTest
         EnergyDetermination determination = new EnergyDetermination();
         Color[][] image = new Color[][] {
                 {
-                    new Color(197,6,0),
-                    new Color(227,164,230),
-                    new Color(71,165,128),
-                    new Color(36,106,96)
+                    new Color(197, 6 ,0),
+                    new Color(227, 164, 230),
+                    new Color(71, 165, 128),
+                    new Color(36, 106, 96)
                 },
                 {
-                    new Color(127,135,191),
-                    new Color(229,40,204),
-                    new Color(238,92,93),
-                    new Color(66,49,70)
+                    new Color(127, 135, 191),
+                    new Color(229, 40, 204),
+                    new Color(238, 92, 93),
+                    new Color(66, 49, 70)
                 },
                 {
-                    new Color(220,219,54),
-                    new Color(92,23,102),
-                    new Color(189,243,45),
-                    new Color(129,81,67)
+                    new Color(220, 219, 54),
+                    new Color(92, 23, 102),
+                    new Color(189, 243, 45),
+                    new Color(129, 81, 67)
                 },
                 {
-                    new Color(88,219,232),
-                    new Color(2,51,181),
-                    new Color(177,136,83),
-                    new Color(203,145,145)
+                    new Color(88, 219, 232),
+                    new Color(2, 51, 181),
+                    new Color(177, 136, 83),
+                    new Color(203, 145, 145)
                 }
         };
 
