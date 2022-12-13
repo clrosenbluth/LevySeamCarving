@@ -1,6 +1,7 @@
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -13,8 +14,6 @@ public class EnergyDetermination
 {
     private double maxEnergy;
     private double minEnergy;
-    private int maxWidth;
-    private int maxHeight;
     private final int MAX_ENERGY = 390150;
 
     public EnergyDetermination() {}
@@ -28,12 +27,20 @@ public class EnergyDetermination
         return convertToEnergyImage(energyArray);
     }
 
-    // todo: set this up for testing
-    public BufferedImage getEnergyImageFromArray(String fileName) throws Exception
+    public void getEnergyImageFromFileToFile(String fileName) throws Exception
     {
         BufferedImage originalImage = getInputStream(fileName);
         Color[][] readImage = readImage(originalImage);
         double[][] brightness = calculateEnergy(readImage);
+        Color[][] energyArray = convertToEnergyArray(brightness);
+        BufferedImage energyImage = convertToEnergyImage(energyArray);
+        File outputfile = new File("saved.png");
+        ImageIO.write(energyImage, "png", outputfile);
+    }
+
+    public BufferedImage getEnergyImageFromArray(Color[][] image)
+    {
+        double[][] brightness = calculateEnergy(image);
         Color[][] energyArray = convertToEnergyArray(brightness);
         return convertToEnergyImage(energyArray);
     }
@@ -45,8 +52,8 @@ public class EnergyDetermination
 
     private Color[][] readImage(BufferedImage originalImage)
     {
-        maxWidth = originalImage.getWidth();
-        maxHeight = originalImage.getHeight();
+        int maxWidth = originalImage.getWidth();
+        int maxHeight = originalImage.getHeight();
         Color[][] colors = new Color[maxWidth][maxHeight];
         for (int i = 0; i < colors.length; i++)
         {
@@ -62,6 +69,8 @@ public class EnergyDetermination
     {
         maxEnergy = Double.MIN_VALUE;
         minEnergy = Double.MAX_VALUE;
+        int maxWidth = image.length;
+        int maxHeight = image[0].length;
 
         double[][] brightness = new double[maxWidth][maxHeight];
         for (int i = 0; i < maxWidth; i++)
@@ -99,6 +108,8 @@ public class EnergyDetermination
 
     private Color[][] convertToEnergyArray(double[][] brightness)
     {
+        int maxWidth = brightness.length;
+        int maxHeight = brightness[0].length;
         Color[][] energy = new Color[maxWidth][maxHeight];
 
         for (int i = 0; i < maxWidth; i++)
@@ -126,6 +137,8 @@ public class EnergyDetermination
 
     private BufferedImage convertToEnergyImage(Color[][] energyArray)
     {
+        int maxWidth = energyArray.length;
+        int maxHeight = energyArray[0].length;
         BufferedImage energyImage = new BufferedImage(maxWidth, maxHeight, BufferedImage.TYPE_INT_RGB);
         for (int i = 0; i < maxWidth; i++)
         {
