@@ -63,7 +63,7 @@ class EnergyDeterminationTest
         EnergyDetermination determination = new EnergyDetermination();
         Color[][] image = new Color[][] {
                 {
-                    new Color(197, 6 ,0),
+                    new Color(197, 6, 0),
                     new Color(227, 164, 230),
                     new Color(71, 165, 128),
                     new Color(36, 106, 96)
