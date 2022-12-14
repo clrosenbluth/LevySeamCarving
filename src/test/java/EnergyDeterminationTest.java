@@ -47,12 +47,10 @@ class EnergyDeterminationTest
                 sameImage = energyImage.getRGB(row, pixel) == anticipatedImage.getRGB(row, pixel);
                 if (!sameImage)
                 {
-                    break;
+                    fail();
                 }
             }
         }
-
-        assertTrue(sameImage);
 
     }
 
@@ -137,12 +135,10 @@ class EnergyDeterminationTest
                 sameImage = energyImage.getRGB(row, pixel) == anticipatedImage.getRGB(row, pixel);
                 if (!sameImage)
                 {
-                    break;
+                    fail();
                 }
             }
         }
-
-        assertTrue(sameImage);
 
     }
 
