@@ -22,18 +22,12 @@ public class EnergyDetermination
     {
         BufferedImage originalImage = getInputStream(fileName);
         Color[][] readImage = readImage(originalImage);
-        double[][] brightness = calculateEnergy(readImage);
-        Color[][] energyArray = convertToEnergyArray(brightness);
-        return convertToEnergyImage(energyArray);
+        return getEnergyImageFromArray(readImage);
     }
 
     public void getEnergyImageFromFileToFile(String fileName) throws Exception
     {
-        BufferedImage originalImage = getInputStream(fileName);
-        Color[][] readImage = readImage(originalImage);
-        double[][] brightness = calculateEnergy(readImage);
-        Color[][] energyArray = convertToEnergyArray(brightness);
-        BufferedImage energyImage = convertToEnergyImage(energyArray);
+        BufferedImage energyImage = getEnergyImageFromFile(fileName);
         File outputfile = new File("saved.png");
         ImageIO.write(energyImage, "png", outputfile);
     }
