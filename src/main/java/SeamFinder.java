@@ -22,5 +22,6 @@ public class SeamFinder
 
     // When moving between a pair of rows/cols, start with the second and calculate upward
 
-    // Might be a good idea to make a Seam object with an array of offset values, not just a seam array
+    // Might be a good idea to make a Seam object with an array of offset values,
+    // not just a seam array
 }
