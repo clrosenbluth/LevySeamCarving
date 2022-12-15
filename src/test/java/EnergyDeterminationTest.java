@@ -8,11 +8,39 @@ import static org.junit.jupiter.api.Assertions.*;
 class EnergyDeterminationTest
 {
 
+    EnergyDetermination determination = new EnergyDetermination();
+
+    Color[][] image4x4 = new Color[][] {
+            {
+                    new Color(197, 6, 0),
+                    new Color(227, 164, 230),
+                    new Color(71, 165, 128),
+                    new Color(36, 106, 96)
+            },
+            {
+                    new Color(127, 135, 191),
+                    new Color(229, 40, 204),
+                    new Color(238, 92, 93),
+                    new Color(66, 49, 70)
+            },
+            {
+                    new Color(220, 219, 54),
+                    new Color(92, 23, 102),
+                    new Color(189, 243, 45),
+                    new Color(129, 81, 67)
+            },
+            {
+                    new Color(88, 219, 232),
+                    new Color(2, 51, 181),
+                    new Color(177, 136, 83),
+                    new Color(203, 145, 145)
+            }
+    };
+
     @Test
-    public void getEnergyFrom3x3Array()
+    public void getBrightnessFrom3x3Array()
     {
-        // given
-        EnergyDetermination determination = new EnergyDetermination();
+        // Given
         Color[][] image = new Color[][] {
                 {new Color(943), new Color(863), new Color(364)},
                 {new Color(759), new Color(724), new Color(45)},
@@ -35,11 +63,11 @@ class EnergyDeterminationTest
             }
         }
 
-        // when
+        // When
         BufferedImage energyImage = determination.getBrightnessImageFromColorArray(image);
 
-        // then
-        boolean sameImage = true;
+        // Then
+        boolean sameImage;
         for (int row = 0; row < energyImage.getHeight(); row++)
         {
             for (int pixel = 0; pixel < energyImage.getWidth(); pixel++)
@@ -51,67 +79,39 @@ class EnergyDeterminationTest
                 }
             }
         }
-
     }
 
     @Test
-    public void getEnergyFrom4x4Array()
+    public void getBrightnessFrom4x4Array()
     {
-        // given
-        EnergyDetermination determination = new EnergyDetermination();
-        Color[][] image = new Color[][] {
+        // Given
+        Color[][] anticipatedColors = new Color[][] {
                 {
-                    new Color(197, 6, 0),
-                    new Color(227, 164, 230),
-                    new Color(71, 165, 128),
-                    new Color(36, 106, 96)
+                        new Color(255, 255, 255),
+                        new Color(255, 255, 255),
+                        new Color(255, 255, 255),
+                        new Color(255, 255, 255)
                 },
                 {
-                    new Color(127, 135, 191),
-                    new Color(229, 40, 204),
-                    new Color(238, 92, 93),
-                    new Color(66, 49, 70)
+                        new Color(255, 255, 255),
+                        new Color(44, 44, 44),
+                        new Color(40, 40, 40),
+                        new Color(255, 255, 255)
                 },
                 {
-                    new Color(220, 219, 54),
-                    new Color(92, 23, 102),
-                    new Color(189, 243, 45),
-                    new Color(129, 81, 67)
+                        new Color(255, 255, 255),
+                        new Color(28, 28, 28),
+                        new Color(0, 0, 0),
+                        new Color(255, 255, 255)
                 },
                 {
-                    new Color(88, 219, 232),
-                    new Color(2, 51, 181),
-                    new Color(177, 136, 83),
-                    new Color(203, 145, 145)
+                        new Color(255, 255, 255),
+                        new Color(255, 255, 255),
+                        new Color(255, 255, 255),
+                        new Color(255, 255, 255)
                 }
         };
 
-        Color[][] anticipatedColors = new Color[][] {
-                {
-                    new Color(255, 255, 255),
-                    new Color(255, 255, 255),
-                    new Color(255, 255, 255),
-                    new Color(255, 255, 255)
-                },
-                {
-                    new Color(255, 255, 255),
-                    new Color(44, 44, 44),
-                    new Color(40, 40, 40),
-                    new Color(255, 255, 255)
-                },
-                {
-                    new Color(255, 255, 255),
-                    new Color(28, 28, 28),
-                    new Color(0, 0, 0),
-                    new Color(255, 255, 255)
-                },
-                {
-                    new Color(255, 255, 255),
-                    new Color(255, 255, 255),
-                    new Color(255, 255, 255),
-                    new Color(255, 255, 255)
-                }
-        };
         BufferedImage anticipatedImage = new BufferedImage(anticipatedColors.length,
                 anticipatedColors[0].length,
                 BufferedImage.TYPE_INT_RGB);
@@ -123,11 +123,11 @@ class EnergyDeterminationTest
             }
         }
 
-        // when
-        BufferedImage energyImage = determination.getBrightnessImageFromColorArray(image);
+        // When
+        BufferedImage energyImage = determination.getBrightnessImageFromColorArray(image4x4);
 
-        // then
-        boolean sameImage = true;
+        // Then
+        boolean sameImage;
         for (int row = 0; row < energyImage.getHeight(); row++)
         {
             for (int pixel = 0; pixel < energyImage.getWidth(); pixel++)
@@ -139,13 +139,35 @@ class EnergyDeterminationTest
                 }
             }
         }
-
     }
 
     @Test
-    public void getBrightnessFrom4x4Array()
+    public void getEnergyFrom4x4Array()
     {
-        //TODO
+        // Given
+        double[][] anticipatedBrightness4x4 = new double[][]{
+                {390150, 390150, 390150, 390150},
+                {390150, 78264, 71503, 390150},
+                {390150, 53797, 11715, 390150},
+                {390150, 390150, 390150, 390150}
+        };
+
+        // When
+        double[][] energy = determination.getEnergyArrayFromColorArray(image4x4);
+
+        // Then
+        boolean sameImage;
+        for (int row = 0; row < energy.length; row++)
+        {
+            for (int pixel = 0; pixel < energy[0].length; pixel++)
+            {
+                sameImage = energy[row][pixel] == anticipatedBrightness4x4[row][pixel];
+                if (!sameImage)
+                {
+                    fail();
+                }
+            }
+        }
     }
 
 }

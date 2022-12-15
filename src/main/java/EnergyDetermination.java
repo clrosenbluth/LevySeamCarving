@@ -25,11 +25,16 @@ public class EnergyDetermination
         return getBrightnessImageFromColorArray(readImage);
     }
 
-    public double[][] getBrightnessFromFile(String fileName) throws Exception
+    public double[][] getEnergyFromFile(String fileName) throws Exception
     {
         BufferedImage originalImage = getBufferedImageFromFile(fileName);
         Color[][] readImage = getColorArrayFromImage(originalImage);
         return getEnergyFromColorArray(readImage);
+    }
+
+    public double[][] getEnergyArrayFromColorArray(Color[][] image)
+    {
+        return getEnergyFromColorArray(image);
     }
 
     public void getBrightnessImageFromFileToFile(String fileName) throws Exception
