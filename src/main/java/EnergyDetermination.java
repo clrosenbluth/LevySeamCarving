@@ -10,10 +10,6 @@ import java.io.IOException;
  * Higher energy corresponds to higher contrast.
  */
 
-// todo: change terms
-    // Color[][] image
-    // double[][] energy
-    // Color[][] brightness
 public class EnergyDetermination
 {
     private double maxEnergy;
@@ -22,40 +18,40 @@ public class EnergyDetermination
 
     public EnergyDetermination() {}
 
-    public BufferedImage getEnergyImageFromFile(String fileName) throws Exception
+    public BufferedImage getBrightnessImageFromFile(String fileName) throws Exception
     {
-        BufferedImage originalImage = getInputStream(fileName);
-        Color[][] readImage = readImage(originalImage);
-        return getEnergyImageFromArray(readImage);
+        BufferedImage originalImage = getBufferedImageFromFile(fileName);
+        Color[][] readImage = getColorArrayFromImage(originalImage);
+        return getBrightnessImageFromColorArray(readImage);
     }
 
     public double[][] getBrightnessFromFile(String fileName) throws Exception
     {
-        BufferedImage originalImage = getInputStream(fileName);
-        Color[][] readImage = readImage(originalImage);
-        return calculateEnergy(readImage);
+        BufferedImage originalImage = getBufferedImageFromFile(fileName);
+        Color[][] readImage = getColorArrayFromImage(originalImage);
+        return getEnergyFromColorArray(readImage);
     }
 
-    public void getEnergyImageFromFileToFile(String fileName) throws Exception
+    public void getBrightnessImageFromFileToFile(String fileName) throws Exception
     {
-        BufferedImage energyImage = getEnergyImageFromFile(fileName);
+        BufferedImage energyImage = getBrightnessImageFromFile(fileName);
         File outputfile = new File("saved.png");
         ImageIO.write(energyImage, "png", outputfile);
     }
 
-    public BufferedImage getEnergyImageFromArray(Color[][] image)
+    public BufferedImage getBrightnessImageFromColorArray(Color[][] image)
     {
-        double[][] brightness = calculateEnergy(image);
-        Color[][] energyArray = convertToEnergyArray(brightness);
-        return convertToEnergyImage(energyArray);
+        double[][] brightness = getEnergyFromColorArray(image);
+        Color[][] energyArray = getEnergyFromBrightness(brightness);
+        return getEnergyImageFromEnergyArray(energyArray);
     }
 
-    private BufferedImage getInputStream(String fileName) throws IOException
+    private BufferedImage getBufferedImageFromFile(String fileName) throws IOException
     {
         return ImageIO.read(EnergyDetermination.class.getResourceAsStream(fileName));
     }
 
-    private Color[][] readImage(BufferedImage originalImage)
+    private Color[][] getColorArrayFromImage(BufferedImage originalImage)
     {
         int maxWidth = originalImage.getWidth();
         int maxHeight = originalImage.getHeight();
@@ -70,7 +66,7 @@ public class EnergyDetermination
         return colors;
     }
 
-    private double[][] calculateEnergy(Color[][] image)
+    private double[][] getEnergyFromColorArray(Color[][] image)
     {
         maxEnergy = Double.MIN_VALUE;
         minEnergy = Double.MAX_VALUE;
@@ -110,7 +106,7 @@ public class EnergyDetermination
         return brightness;
     }
 
-    private Color[][] convertToEnergyArray(double[][] brightness)
+    private Color[][] getEnergyFromBrightness(double[][] brightness)
     {
         int maxWidth = brightness.length;
         int maxHeight = brightness[0].length;
@@ -140,7 +136,7 @@ public class EnergyDetermination
         return energy;
     }
 
-    private BufferedImage convertToEnergyImage(Color[][] energyArray)
+    private BufferedImage getEnergyImageFromEnergyArray(Color[][] energyArray)
     {
         int maxWidth = energyArray.length;
         int maxHeight = energyArray[0].length;

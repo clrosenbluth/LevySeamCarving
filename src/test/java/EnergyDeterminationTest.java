@@ -36,7 +36,7 @@ class EnergyDeterminationTest
         }
 
         // when
-        BufferedImage energyImage = determination.getEnergyImageFromArray(image);
+        BufferedImage energyImage = determination.getBrightnessImageFromColorArray(image);
 
         // then
         boolean sameImage = true;
@@ -124,7 +124,7 @@ class EnergyDeterminationTest
         }
 
         // when
-        BufferedImage energyImage = determination.getEnergyImageFromArray(image);
+        BufferedImage energyImage = determination.getBrightnessImageFromColorArray(image);
 
         // then
         boolean sameImage = true;
