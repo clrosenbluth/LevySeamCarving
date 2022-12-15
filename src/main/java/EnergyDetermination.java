@@ -96,12 +96,20 @@ public class EnergyDetermination
                     Color right = image[i + 1][j];
                     Color upper = image[i][j - 1];
                     Color lower = image[i][j + 1];
-                    energy = (upper.getRed() - lower.getRed()) * (upper.getRed() - lower.getRed())
-                            + (upper.getGreen() - lower.getGreen()) * (upper.getGreen() - lower.getGreen())
-                            + (upper.getBlue() - lower.getBlue()) * (upper.getBlue() - lower.getBlue())
-                            + (left.getRed() - right.getRed()) * (left.getRed() - right.getRed())
-                            + (left.getGreen() - right.getGreen()) * (left.getGreen() - right.getGreen())
-                            + (left.getBlue() - right.getBlue()) * (left.getBlue() - right.getBlue());
+
+                    int reds1 = upper.getRed() - lower.getRed();
+                    int reds2 = left.getRed() - right.getRed();
+                    int greens1 = upper.getGreen() - lower.getGreen();
+                    int greens2 = left.getGreen() - right.getGreen();
+                    int blues1 = upper.getBlue() - lower.getBlue();
+                    int blues2 = left.getBlue() - right.getBlue();
+
+                    energy = (reds1 * reds1)
+                            + (greens1 * greens1)
+                            + (blues1 * blues1)
+                            + (reds2 * reds2)
+                            + (greens2 * greens2)
+                            + (blues2 * blues2);
                 }
                 brightness[i][j] = energy;
                 maxEnergy = Math.max(maxEnergy, energy);
