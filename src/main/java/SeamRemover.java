@@ -8,7 +8,8 @@ public class SeamRemover
     // 3. find lowest-energy vertical seam (from energy array)
     // 4. remove seam (from Color array)
         // two copies of the array (row by row):
-        // everything before the seam, then everything after the seam.
+        // everything before the seam
+        // then everything after the seam.
         // Use System.arrayCopy
     // 5. go to step 2
     // Repeat until width is as desired
