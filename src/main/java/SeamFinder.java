@@ -12,4 +12,8 @@ public class SeamFinder
     // This is done for vertical and horizontal seams
 
     // Return 1 lowest seam, with a set of x's or y's (depending on which direction it is going)
+
+    // When moving between a pair of rows/cols, start with the second and calculate upward
+
+    // Might be a good idea to make a Seam object with an array of offset values, not just a seam array
 }

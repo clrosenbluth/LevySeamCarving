@@ -142,4 +142,10 @@ class EnergyDeterminationTest
 
     }
 
+    @Test
+    public void getBrightnessFrom4x4Array()
+    {
+        //TODO
+    }
+
 }

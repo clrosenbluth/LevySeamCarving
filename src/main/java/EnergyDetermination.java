@@ -10,6 +10,10 @@ import java.io.IOException;
  * Higher energy corresponds to higher contrast.
  */
 
+// todo: change terms
+    // Color[][] image
+    // double[][] energy
+    // Color[][] brightness
 public class EnergyDetermination
 {
     private double maxEnergy;
@@ -23,6 +27,13 @@ public class EnergyDetermination
         BufferedImage originalImage = getInputStream(fileName);
         Color[][] readImage = readImage(originalImage);
         return getEnergyImageFromArray(readImage);
+    }
+
+    public double[][] getBrightnessFromFile(String fileName) throws Exception
+    {
+        BufferedImage originalImage = getInputStream(fileName);
+        Color[][] readImage = readImage(originalImage);
+        return calculateEnergy(readImage);
     }
 
     public void getEnergyImageFromFileToFile(String fileName) throws Exception
@@ -84,12 +95,12 @@ public class EnergyDetermination
                     Color right = image[i + 1][j];
                     Color upper = image[i][j - 1];
                     Color lower = image[i][j + 1];
-                    energy = Math.pow(upper.getRed() - lower.getRed(), 2)
-                            + Math.pow(upper.getGreen() - lower.getGreen(), 2)
-                            + Math.pow(upper.getBlue() - lower.getBlue(), 2)
-                            + Math.pow(left.getRed() - right.getRed(), 2)
-                            + Math.pow(left.getGreen() - right.getGreen(), 2)
-                            + Math.pow(left.getBlue() - right.getBlue(), 2);
+                    energy = (upper.getRed() - lower.getRed()) * (upper.getRed() - lower.getRed())
+                            + (upper.getGreen() - lower.getGreen()) * (upper.getGreen() - lower.getGreen())
+                            + (upper.getBlue() - lower.getBlue()) * (upper.getBlue() - lower.getBlue())
+                            + (left.getRed() - right.getRed()) * (left.getRed() - right.getRed())
+                            + (left.getGreen() - right.getGreen()) * (left.getGreen() - right.getGreen())
+                            + (left.getBlue() - right.getBlue()) * (left.getBlue() - right.getBlue());
                 }
                 brightness[i][j] = energy;
                 maxEnergy = Math.max(maxEnergy, energy);
