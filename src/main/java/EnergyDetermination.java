@@ -12,7 +12,9 @@ public class EnergyDetermination
     private double minEnergy;
     private final int maxPossibleEnergy = 390150;
 
-    public EnergyDetermination() {}
+    public EnergyDetermination()
+    {
+    }
 
     public double[][] calculateEnergy(Color[][] image)
     {
@@ -33,9 +35,9 @@ public class EnergyDetermination
             {
                 int energy;
                 if (i == 0
-                    || j == 0
-                    || i == width - 1
-                    || j == height - 1)
+                        || j == 0
+                        || i == width - 1
+                        || j == height - 1)
                 {
                     energy = maxPossibleEnergy;
                 } else

@@ -6,11 +6,13 @@ import java.io.IOException;
 
 /**
  * Image: produces a 2d Color array from an image filename
- * */
+ */
 
 public class Image
 {
-    public Image() {}
+    public Image()
+    {
+    }
 
     public Color[][] getImage(String fileName) throws IOException
     {

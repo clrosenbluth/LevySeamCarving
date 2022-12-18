@@ -1,7 +1,9 @@
 public class SeamRemover
 {
 
-    public SeamRemover() {}
+    public SeamRemover()
+    {
+    }
 
     public double[][] removeHorizontalSeam(double[][] energy)
     {
