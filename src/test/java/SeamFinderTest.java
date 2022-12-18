@@ -5,7 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class SeamFinderTest
 {
     SeamFinder seamFinder = new SeamFinder();
-    double[][] energy = new double[][] {
+    double[][] energy = new double[][]{
             {1, 4, 3, 5, 2},
             {3, 2, 5, 2, 3},
             {5, 2, 4, 2, 1}
@@ -15,7 +15,7 @@ class SeamFinderTest
     public void findVerticalSeam()
     {
         // Given
-        int[] anticipatedSeam = new int[] {0, 1, 1};
+        int[] anticipatedSeam = new int[]{0, 1, 1};
 
         // When
         int[] newSeam = seamFinder.findVerticalSeam(energy);
@@ -29,7 +29,7 @@ class SeamFinderTest
     public void findHorizontalSeam()
     {
         // Given
-        int[] anticipatedSeam = new int[] {0, 1, 0, 1, 2};
+        int[] anticipatedSeam = new int[]{0, 1, 0, 1, 2};
 
         // When
         int[] newSeam = seamFinder.findHorizontalSeam(energy);

@@ -5,9 +5,9 @@ public class SeamFinder
 {
     public SeamFinder()
     {
-        
+
     }
-    
+
     public int[] findVerticalSeam(double[][] energy)
     {
         double[][] map = createVerticalEnergyMap(energy);
@@ -27,7 +27,7 @@ public class SeamFinder
 
         return minSeam;
     }
-    
+
     public int[] findHorizontalSeam(double[][] energy)
     {
         double[][] map = createHorizontalEnergyMap(energy);
@@ -72,8 +72,7 @@ public class SeamFinder
         if (leftOrBottom < same && leftOrBottom < rightOrTop)
         {
             offset = 1;
-        }
-        else if (rightOrTop < same && rightOrTop < leftOrBottom)
+        } else if (rightOrTop < same && rightOrTop < leftOrBottom)
         {
             offset = -1;
         }
@@ -91,25 +90,25 @@ public class SeamFinder
             int lastCell = verticalEnergyMap[0].length - 1;
 
             verticalEnergyMap[row][0] = Math.min(verticalEnergyMap[row - 1][0] + energy[row][0],
-                                                 verticalEnergyMap[row - 1][1] + energy[row][0]);
+                    verticalEnergyMap[row - 1][1] + energy[row][0]);
             verticalEnergyMap[row][lastCell] = Math.min(verticalEnergyMap[row - 1][lastCell] + energy[row][lastCell],
-                                                        verticalEnergyMap[row - 1][lastCell - 1] + energy[row][lastCell]);
+                    verticalEnergyMap[row - 1][lastCell - 1] + energy[row][lastCell]);
 
             for (int col = 1; col < lastCell; col++)
             {
                 double currEnergy = energy[row][col];
                 double left = verticalEnergyMap[row - 1][col - 1];
                 double middle = verticalEnergyMap[row - 1][col];
-                double right = verticalEnergyMap[row-1][col + 1];
+                double right = verticalEnergyMap[row - 1][col + 1];
                 verticalEnergyMap[row][col] = Math.min(Math.min(left + currEnergy,
-                                                                middle + currEnergy),
-                                                       right + currEnergy);
+                                middle + currEnergy),
+                        right + currEnergy);
             }
         }
 
         return verticalEnergyMap;
     }
-    
+
     private double[][] createHorizontalEnergyMap(double[][] energy)
     {
         double[][] horizontalEnergyMap = new double[energy.length][energy[0].length];
@@ -124,9 +123,9 @@ public class SeamFinder
             int lastCell = horizontalEnergyMap.length - 1;
 
             horizontalEnergyMap[0][col] = Math.min(horizontalEnergyMap[0][col - 1] + energy[0][col],
-                                                   horizontalEnergyMap[1][col - 1] + energy[0][col]);
+                    horizontalEnergyMap[1][col - 1] + energy[0][col]);
             horizontalEnergyMap[lastCell][col] = Math.min(horizontalEnergyMap[lastCell][col - 1] + energy[lastCell][col],
-                                                          horizontalEnergyMap[lastCell - 1][col - 1] + energy[lastCell][col]);
+                    horizontalEnergyMap[lastCell - 1][col - 1] + energy[lastCell][col]);
 
             for (int row = 1; row < lastCell; row++)
             {
