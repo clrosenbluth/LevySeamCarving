@@ -38,13 +38,13 @@ public class Main
             while (energy.length > desiredHeight)
             {
                 int[] seam = seamFinder.findVerticalSeam(energy);
-                energy = seamRemover.removeVerticalSeam(energy);
+                energy = seamRemover.removeVerticalSeam(energy, seam);
             }
 
             while (energy[0].length > desiredWidth)
             {
                 int[] seam = seamFinder.findHorizontalSeam(energy);
-                energy = seamRemover.removeHorizontalSeam(energy);
+                energy = seamRemover.removeHorizontalSeam(energy, seam);
             }
 
             Color[][] newImage = imageMaker.createImage(energy);

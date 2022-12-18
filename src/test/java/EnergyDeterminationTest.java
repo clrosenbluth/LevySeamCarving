@@ -6,9 +6,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class EnergyDeterminationTest
 {
-
-    // TODO: fix
-
     @Test
     public void calculateEnergy()
     {
