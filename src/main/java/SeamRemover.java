@@ -1,5 +1,10 @@
 public class SeamRemover
 {
+
+    public SeamRemover()
+    {
+
+    }
     // These are the steps for next week:
 
     // Vertical seams:
