@@ -22,7 +22,11 @@ public class SeamFinder
             int bottomRow = minSeam[row + 1];
             int left = bottomRow == energy[0].length ? energy[0].length : bottomRow - 1;
             int right = bottomRow == 0 ? 0 : bottomRow + 1;
-            minSeam[row] = bottomRow + calculateOffset(energy[row][left], energy[row][bottomRow], energy[row][right]);
+            minSeam[row] = bottomRow + calculateOffset(
+                    energy[row][left],
+                    energy[row][bottomRow],
+                    energy[row][right]
+            );
         }
 
         return minSeam;
@@ -71,8 +75,7 @@ public class SeamFinder
         if (leftOrBottom < same && leftOrBottom < rightOrTop)
         {
             offset = -1;
-        }
-        else if (rightOrTop < same && rightOrTop < leftOrBottom)
+        } else if (rightOrTop < same && rightOrTop < leftOrBottom)
         {
             offset = 1;
         }
@@ -99,7 +102,7 @@ public class SeamFinder
                 double currEnergy = energy[row][col];
                 double left = verticalEnergyMap[row - 1][col - 1];
                 double middle = verticalEnergyMap[row - 1][col];
-                double right = verticalEnergyMap[row-1][col + 1];
+                double right = verticalEnergyMap[row - 1][col + 1];
                 verticalEnergyMap[row][col] = Math.min(Math.min(left + currEnergy,
                                                                 middle + currEnergy),
                                                        right + currEnergy);
