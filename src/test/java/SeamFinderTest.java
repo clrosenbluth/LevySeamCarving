@@ -15,7 +15,7 @@ class SeamFinderTest
     public void findVerticalSeam()
     {
         // Given
-        int[] anticipatedSeam = new int[]{0, 1, 1};
+        int[] anticipatedSeam = new int[] {0, 1, 1};
 
         // When
         int[] newSeam = seamFinder.findVerticalSeam(energy);
