@@ -22,7 +22,11 @@ public class SeamFinder
             int bottomRow = minSeam[row + 1];
             int left = bottomRow == energy[0].length ? energy[0].length : bottomRow - 1;
             int right = bottomRow == 0 ? 0 : bottomRow + 1;
-            minSeam[row] = bottomRow + calculateOffset(energy[row][left], energy[row][bottomRow], energy[row][right]);
+            minSeam[row] = bottomRow + calculateOffset(
+                    energy[row][left],
+                    energy[row][bottomRow],
+                    energy[row][right]
+            );
         }
 
         return minSeam;
