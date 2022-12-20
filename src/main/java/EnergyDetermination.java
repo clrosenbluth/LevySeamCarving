@@ -14,6 +14,10 @@ public class EnergyDetermination
 {
     private double maxEnergy;
     private double minEnergy;
+    // maximum possible energy: (255^2) * 6 = 390,150
+    // this would occur if the left and top colors had only 255s
+    // and the right and bottom colors had only 0s for their
+    // R G and B values
     private final int maxPossibleEnergy = 390150;
 
     public EnergyDetermination() {}
