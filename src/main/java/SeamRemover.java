@@ -1,6 +1,8 @@
 public class SeamRemover
 {
-    public SeamRemover() {}
+    public SeamRemover()
+    {
+    }
 
     public double[][] removeHorizontalSeam(double[][] energy, int[] seam)
     {
@@ -24,20 +26,15 @@ public class SeamRemover
         double[][] newEnergy = new double[energy.length][energy[0].length - 1];
         for (int row = 0; row < seam.length; row++)
         {
-            if (seam[row] >= 0)
-            {
-                System.arraycopy(energy[row], 0, newEnergy[row], 0, seam[row]);
-            }
-            if (energy[0].length - (seam[row] + 1) >= 0)
-            {
-                System.arraycopy(
-                        energy[row],
-                        seam[row] + 1,
-                        newEnergy[row],
-                        seam[row] + 1 - 1,
-                        energy[0].length - (seam[row] + 1)
-                );
-            }
+            int spot = seam[row];
+            System.arraycopy(energy[row], 0, newEnergy[row], 0, spot);
+            System.arraycopy(
+                    energy[row],
+                    spot + 1,
+                    newEnergy[row],
+                    spot,
+                    energy[0].length - (spot + 1)
+            );
         }
         return newEnergy;
     }
