@@ -102,7 +102,6 @@ public class SeamFinder
         for (int row = 1; row < map.length; row++)
         {
             int lastCell = map[0].length - 1;
-
             double firstEnergy = energy[row][0];
             double topLeft = map[row - 1][0] + firstEnergy;
             double topLeftPlusOne = map[row - 1][1] + firstEnergy;
@@ -139,7 +138,6 @@ public class SeamFinder
         for (int col = 1; col < map[0].length; col++)
         {
             int lastCell = map.length - 1;
-
             double lastEnergy = energy[lastCell][col];
             double leftBottom = map[lastCell][col - 1] + lastEnergy;
             double leftBottomMinusOne = map[lastCell - 1][col - 1] + lastEnergy;

@@ -1,8 +1,4 @@
-import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 
 /**
  * A class to determine the energy of a given pixel in a picture to be resized.
@@ -24,76 +20,28 @@ public class EnergyDetermination
     {
     }
 
-    public BufferedImage getBrightnessImageFromFile(String fileName) throws Exception
+    public double[][] calculateEnergy(Color[][] image)
     {
-        BufferedImage originalImage = getBufferedImageFromFile(fileName);
-        Color[][] readImage = getColorArrayFromImage(originalImage);
-        return getBrightnessImageFromColorArray(readImage);
+        return getEnergy(getBrightness(image));
     }
 
-    public double[][] getEnergyFromFile(String fileName) throws Exception
-    {
-        BufferedImage originalImage = getBufferedImageFromFile(fileName);
-        Color[][] readImage = getColorArrayFromImage(originalImage);
-        return getEnergyFromColorArray(readImage);
-    }
-
-    public double[][] getEnergyArrayFromColorArray(Color[][] image)
-    {
-        return getEnergyFromColorArray(image);
-    }
-
-    public void getBrightnessImageFromFileToFile(String fileName) throws Exception
-    {
-        BufferedImage energyImage = getBrightnessImageFromFile(fileName);
-        File outputfile = new File("saved.png");
-        ImageIO.write(energyImage, "png", outputfile);
-    }
-
-    public BufferedImage getBrightnessImageFromColorArray(Color[][] image)
-    {
-        double[][] brightness = getEnergyFromColorArray(image);
-        Color[][] energyArray = getEnergyFromBrightness(brightness);
-        return getEnergyImageFromEnergyArray(energyArray);
-    }
-
-    private BufferedImage getBufferedImageFromFile(String fileName) throws IOException
-    {
-        return ImageIO.read(EnergyDetermination.class.getResourceAsStream(fileName));
-    }
-
-    private Color[][] getColorArrayFromImage(BufferedImage originalImage)
-    {
-        int maxWidth = originalImage.getWidth();
-        int maxHeight = originalImage.getHeight();
-        Color[][] colors = new Color[maxWidth][maxHeight];
-        for (int i = 0; i < colors.length; i++)
-        {
-            for (int j = 0; j < colors[0].length; j++)
-            {
-                colors[i][j] = new Color(originalImage.getRGB(i, j));
-            }
-        }
-        return colors;
-    }
-
-    private double[][] getEnergyFromColorArray(Color[][] image)
+    private int[][] getBrightness(Color[][] image)
     {
         maxEnergy = Double.MIN_VALUE;
         minEnergy = Double.MAX_VALUE;
-        int maxWidth = image.length;
-        int maxHeight = image[0].length;
+        int width = image.length;
+        int height = image[0].length;
 
-        double[][] brightness = new double[maxWidth][maxHeight];
-        for (int i = 0; i < maxWidth; i++)
+        int[][] brightnessArray = new int[width][height];
+        for (int i = 0; i < width; i++)
         {
-            for (int j = 0; j < maxHeight; j++)
+            for (int j = 0; j < height; j++)
             {
-                double energy;
+                int energy;
                 if (i == 0
                         || j == 0
-                        || i == maxWidth - 1
-                        || j == maxHeight - 1)
+                        || i == width - 1
+                        || j == height - 1)
                 {
                     energy = maxPossibleEnergy;
                 } else
@@ -103,73 +51,63 @@ public class EnergyDetermination
                     Color upper = image[i][j - 1];
                     Color lower = image[i][j + 1];
 
-                    int reds1 = upper.getRed() - lower.getRed();
-                    int reds2 = left.getRed() - right.getRed();
-                    int greens1 = upper.getGreen() - lower.getGreen();
-                    int greens2 = left.getGreen() - right.getGreen();
-                    int blues1 = upper.getBlue() - lower.getBlue();
-                    int blues2 = left.getBlue() - right.getBlue();
-
-                    energy = (reds1 * reds1)
-                            + (greens1 * greens1)
-                            + (blues1 * blues1)
-                            + (reds2 * reds2)
-                            + (greens2 * greens2)
-                            + (blues2 * blues2);
+                    energy = calculateCellEnergy(left, right, upper, lower);
                 }
-                brightness[i][j] = energy;
+                brightnessArray[i][j] = energy;
                 maxEnergy = Math.max(maxEnergy, energy);
                 minEnergy = Math.min(minEnergy, energy);
             }
         }
-        return brightness;
+        return brightnessArray;
     }
 
-    private Color[][] getEnergyFromBrightness(double[][] brightness)
+    private double[][] getEnergy(int[][] brightness)
     {
-        int maxWidth = brightness.length;
-        int maxHeight = brightness[0].length;
-        Color[][] energy = new Color[maxWidth][maxHeight];
+        int width = brightness.length;
+        int height = brightness[0].length;
+        double[][] energy = new double[width][height];
 
-        for (int i = 0; i < maxWidth; i++)
+        for (int i = 0; i < width; i++)
         {
-            for (int j = 0; j < maxHeight; j++)
+            for (int j = 0; j < height; j++)
             {
-                int color;
+                double color;
                 if (i == 0
                         || j == 0
-                        || i == maxWidth - 1
-                        || j == maxHeight - 1)
+                        || i == width - 1
+                        || j == height - 1)
                 {
                     color = 255;
                 } else
                 {
-                    color = (int) (((brightness[i][j] - minEnergy)
+                    color = (((brightness[i][j] - minEnergy)
                             / (maxEnergy - minEnergy))
                             * 255);
                 }
-                energy[i][j] = new Color(color, color, color);
+                energy[i][j] = color;
             }
         }
 
         return energy;
     }
 
-    private BufferedImage getEnergyImageFromEnergyArray(Color[][] energyArray)
+    private int calculateCellEnergy(Color left,
+                                    Color right,
+                                    Color upper,
+                                    Color lower)
     {
-        int maxWidth = energyArray.length;
-        int maxHeight = energyArray[0].length;
-        BufferedImage energyImage = new BufferedImage(
-                maxWidth,
-                maxHeight,
-                BufferedImage.TYPE_INT_RGB);
-        for (int i = 0; i < maxWidth; i++)
-        {
-            for (int j = 0; j < maxHeight; j++)
-            {
-                energyImage.setRGB(i, j, energyArray[i][j].getRGB());
-            }
-        }
-        return energyImage;
+        int redsVertical = upper.getRed() - lower.getRed();
+        int redsHorizontal = left.getRed() - right.getRed();
+        int greensVertical = upper.getGreen() - lower.getGreen();
+        int greensHorizontal = left.getGreen() - right.getGreen();
+        int bluesVertical = upper.getBlue() - lower.getBlue();
+        int bluesHorizontal = left.getBlue() - right.getBlue();
+
+        return (redsVertical * redsVertical)
+                + (greensVertical * greensVertical)
+                + (bluesVertical * bluesVertical)
+                + (redsHorizontal * redsHorizontal)
+                + (greensHorizontal * greensHorizontal)
+                + (bluesHorizontal * bluesHorizontal);
     }
 }
