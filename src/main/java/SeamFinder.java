@@ -10,22 +10,25 @@ public class SeamFinder
 
     public int[] findVerticalSeam(double[][] energy)
     {
+        int numRows = energy.length;
+        int numCols = energy[0].length;
+
         double[][] map = createVerticalEnergyMap(energy);
-        int[] minSeam = new int[energy.length];
+        int[] minSeam = new int[numRows];
 
-        double[] lastRow = new double[energy[0].length];
-        System.arraycopy(energy[energy.length - 1], 0, lastRow, 0, energy.length);
+        double[] lastRow = new double[numCols];
+        System.arraycopy(map[numRows - 1], 0, lastRow, 0, numCols);
 
-        minSeam[energy.length - 1] = lastCoordinate(lastRow);
-        for (int row = energy.length - 2; row >= 0; row--)
+        minSeam[numRows - 1] = lastCoordinate(lastRow);
+        for (int row = numRows - 2; row >= 0; row--)
         {
             int bottomRow = minSeam[row + 1];
-            int left = bottomRow == energy[0].length ? energy[0].length : bottomRow - 1;
+            int left = bottomRow == numCols ? numCols : bottomRow - 1;
             int right = bottomRow == 0 ? 0 : bottomRow + 1;
-            minSeam[row] = bottomRow + calculateOffset(
-                    energy[row][left],
-                    energy[row][bottomRow],
-                    energy[row][right]
+            minSeam[row] = bottomRow - calculateOffset(
+                    map[row][left],
+                    map[row][bottomRow],
+                    map[row][right]
             );
         }
 
@@ -34,22 +37,29 @@ public class SeamFinder
 
     public int[] findHorizontalSeam(double[][] energy)
     {
-        double[][] map = createHorizontalEnergyMap(energy);
-        int[] minSeam = new int[energy[0].length];
+        int numRows = energy.length;
+        int numCols = energy[0].length;
 
-        double[] lastCol = new double[energy.length];
-        for (int row = 0; row < energy.length; row++)
+        double[][] map = createHorizontalEnergyMap(energy);
+        int[] minSeam = new int[numCols];
+
+        double[] lastCol = new double[numRows];
+        for (int row = 0; row < numRows; row++)
         {
-            lastCol[row] = energy[row][energy[0].length - 1];
+            lastCol[row] = map[row][numCols - 1];
         }
 
-        minSeam[energy.length - 1] = lastCoordinate(lastCol);
-        for (int col = energy.length - 2; col >= 0; col--)
+        minSeam[numCols - 1] = lastCoordinate(lastCol);
+        for (int col = numCols - 2; col >= 0; col--)
         {
             int rightCol = minSeam[col + 1];
             int top = rightCol == 0 ? 0 : rightCol - 1;
-            int bottom = rightCol == energy.length ? energy.length : rightCol + 1;
-            minSeam[col] = rightCol + calculateOffset(bottom, rightCol, top);
+            int bottom = rightCol == numRows - 1 ? numRows - 1 : rightCol + 1;
+            minSeam[col] = rightCol + calculateOffset(
+                    map[bottom][col],
+                    map[rightCol][col],
+                    map[top][col]
+            );
         }
 
         return minSeam;
@@ -63,6 +73,7 @@ public class SeamFinder
         {
             if (finalEnergies[cell] < minEnergy)
             {
+                minEnergy = finalEnergies[cell];
                 minCoordinate = cell;
             }
         }
@@ -74,74 +85,80 @@ public class SeamFinder
         int offset = 0;
         if (leftOrBottom < same && leftOrBottom < rightOrTop)
         {
-            offset = -1;
+            offset = 1;
         } else if (rightOrTop < same && rightOrTop < leftOrBottom)
         {
-            offset = 1;
+            offset = -1;
         }
         return offset;
     }
 
     private double[][] createVerticalEnergyMap(double[][] energy)
     {
-        double[][] verticalEnergyMap = new double[energy.length][energy[0].length];
+        double[][] map = new double[energy.length][energy[0].length];
 
-        System.arraycopy(energy[0], 0, verticalEnergyMap[0], 0, verticalEnergyMap.length);
+        System.arraycopy(energy[0], 0, map[0], 0, map[0].length);
 
-        for (int row = 1; row < verticalEnergyMap.length; row++)
+        for (int row = 1; row < map.length; row++)
         {
-            int lastCell = verticalEnergyMap[0].length - 1;
+            int lastCell = map[0].length - 1;
+            double firstEnergy = energy[row][0];
+            double topLeft = map[row - 1][0] + firstEnergy;
+            double topLeftPlusOne = map[row - 1][1] + firstEnergy;
 
-            verticalEnergyMap[row][0] = Math.min(verticalEnergyMap[row - 1][0],
-                    verticalEnergyMap[row - 1][1]);
-            verticalEnergyMap[row][lastCell] = Math.min(verticalEnergyMap[row - 1][lastCell],
-                    verticalEnergyMap[row - 1][lastCell]);
+            double lastEnergy = energy[row][lastCell];
+            double topRight = map[row - 1][lastCell] + lastEnergy;
+            double topRightMinusOne = map[row - 1][lastCell - 1] + lastEnergy;
+
+            map[row][0] = Math.min(topLeft, topLeftPlusOne);
+            map[row][lastCell] = Math.min(topRight, topRightMinusOne);
 
             for (int col = 1; col < lastCell; col++)
             {
                 double currEnergy = energy[row][col];
-                double left = verticalEnergyMap[row - 1][col - 1];
-                double middle = verticalEnergyMap[row - 1][col];
-                double right = verticalEnergyMap[row - 1][col + 1];
-                verticalEnergyMap[row][col] = Math.min(Math.min(left + currEnergy,
-                                middle + currEnergy),
-                        right + currEnergy);
+                double left = map[row - 1][col - 1] + currEnergy;
+                double middle = map[row - 1][col] + currEnergy;
+                double right = map[row - 1][col + 1] + currEnergy;
+                map[row][col] = Math.min(Math.min(left, middle), right);
             }
         }
 
-        return verticalEnergyMap;
+        return map;
     }
 
     private double[][] createHorizontalEnergyMap(double[][] energy)
     {
-        double[][] horizontalEnergyMap = new double[energy.length][energy[0].length];
+        double[][] map = new double[energy.length][energy[0].length];
 
-        for (int row = 0; row < horizontalEnergyMap.length; row++)
+        for (int row = 0; row < map.length; row++)
         {
-            horizontalEnergyMap[row][0] = energy[row][0];
+            map[row][0] = energy[row][0];
         }
 
-        for (int col = 1; col < horizontalEnergyMap[0].length; col++)
+        for (int col = 1; col < map[0].length; col++)
         {
-            int lastCell = horizontalEnergyMap.length - 1;
+            int lastCell = map.length - 1;
+            double lastEnergy = energy[lastCell][col];
+            double leftBottom = map[lastCell][col - 1] + lastEnergy;
+            double leftBottomMinusOne = map[lastCell - 1][col - 1] + lastEnergy;
 
-            horizontalEnergyMap[0][col] = Math.min(horizontalEnergyMap[0][col - 1],
-                    horizontalEnergyMap[1][col - 1]);
-            horizontalEnergyMap[lastCell][col] = Math.min(horizontalEnergyMap[lastCell][col - 1],
-                    horizontalEnergyMap[lastCell][col - 1]);
+            double firstEnergy = energy[0][col];
+            double leftTop = map[0][col - 1] + firstEnergy;
+            double leftTopPlusOne = map[1][col - 1] + firstEnergy;
+
+            map[0][col] = Math.min(leftTop, leftTopPlusOne);
+            map[lastCell][col] = Math.min(leftBottom, leftBottomMinusOne);
 
             for (int row = 1; row < lastCell; row++)
             {
                 double currEnergy = energy[row][col];
-                double top = horizontalEnergyMap[row - 1][col - 1];
-                double middle = horizontalEnergyMap[row][col - 1];
-                double bottom = horizontalEnergyMap[row + 1][col - 1];
-                horizontalEnergyMap[row][col] = Math.min(Math.min(top + currEnergy,
-                                middle + currEnergy),
-                        bottom + currEnergy);
+                double top = map[row - 1][col - 1] + currEnergy;
+                double middle = map[row][col - 1] + currEnergy;
+                double bottom = map[row + 1][col - 1] + currEnergy;
+                map[row][col] = Math.min(Math.min(top, middle), bottom);
             }
         }
 
-        return horizontalEnergyMap;
+        return map;
     }
 }
