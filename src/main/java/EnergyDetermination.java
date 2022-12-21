@@ -20,7 +20,9 @@ public class EnergyDetermination
     // R G and B values
     private final int maxPossibleEnergy = 390150;
 
-    public EnergyDetermination() {}
+    public EnergyDetermination()
+    {
+    }
 
     public BufferedImage getBrightnessImageFromFile(String fileName) throws Exception
     {
@@ -89,9 +91,9 @@ public class EnergyDetermination
             {
                 double energy;
                 if (i == 0
-                    || j == 0
-                    || i == maxWidth - 1
-                    || j == maxHeight - 1)
+                        || j == 0
+                        || i == maxWidth - 1
+                        || j == maxHeight - 1)
                 {
                     energy = maxPossibleEnergy;
                 } else
