@@ -16,7 +16,9 @@ public class EnergyDetermination
     // R G and B values
     private final int maxPossibleEnergy = 390150;
 
-    public EnergyDetermination() {}
+    public EnergyDetermination()
+    {
+    }
 
     public double[][] calculateEnergy(Color[][] image)
     {
