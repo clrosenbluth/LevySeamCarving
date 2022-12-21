@@ -20,9 +20,9 @@ public class Main
 
     // to consider: create a 2D array of pixel classes
 
-    public static void main(String[] args)
-    {
-        try
+    // Example:
+    /*
+    * try
         {
             Image imageMaker = new Image();
             EnergyDetermination energyDeterminer = new EnergyDetermination();
@@ -52,7 +52,10 @@ public class Main
         } catch (Exception e)
         {
             e.printStackTrace();
-        }
+        }*/
+
+    public static void main(String[] args)
+    {
     }
 
 }

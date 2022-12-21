@@ -12,7 +12,7 @@ class EnergyDeterminationTest
         // Given
         EnergyDetermination determination = new EnergyDetermination();
 
-        Color[][] image4x4 = new Color[][] {
+        Color[][] image4x4 = new Color[][]{
                 {
                         new Color(197, 6, 0),
                         new Color(227, 164, 230),
@@ -39,7 +39,7 @@ class EnergyDeterminationTest
                 }
         };
 
-        double[][] anticipatedEnergy = new double[][] {
+        double[][] anticipatedEnergy = new double[][]{
                 {255, 255, 255, 255},
                 {255, 44.84256213088113, 40.28681279479964, 255},
                 {255, 28.35601886717666, 0, 255},
@@ -60,6 +60,5 @@ class EnergyDeterminationTest
                 }
             }
         }
-
     }
 }

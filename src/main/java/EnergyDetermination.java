@@ -96,14 +96,18 @@ public class EnergyDetermination
                                     Color upper,
                                     Color lower)
     {
-        int reds1 = upper.getRed() - lower.getRed();
-        int reds2 = left.getRed() - right.getRed();
-        int greens1 = upper.getGreen() - lower.getGreen();
-        int greens2 = left.getGreen() - right.getGreen();
-        int blues1 = upper.getBlue() - lower.getBlue();
-        int blues2 = left.getBlue() - right.getBlue();
+        int redsVertical = upper.getRed() - lower.getRed();
+        int redsHorizontal = left.getRed() - right.getRed();
+        int greensVertical = upper.getGreen() - lower.getGreen();
+        int greensHorizontal = left.getGreen() - right.getGreen();
+        int bluesVertical = upper.getBlue() - lower.getBlue();
+        int bluesHorizontal = left.getBlue() - right.getBlue();
 
-        return (reds1 * reds1) + (greens1 * greens1) + (blues1 * blues1)
-                + (reds2 * reds2) + (greens2 * greens2) + (blues2 * blues2);
+        return (redsVertical * redsVertical)
+                + (greensVertical * greensVertical)
+                + (bluesVertical * bluesVertical)
+                + (redsHorizontal * redsHorizontal)
+                + (greensHorizontal * greensHorizontal)
+                + (bluesHorizontal * bluesHorizontal);
     }
 }

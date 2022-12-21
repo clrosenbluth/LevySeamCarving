@@ -6,11 +6,13 @@ import java.io.IOException;
 
 /**
  * Image: produces a 2d Color array from an image filename
- * */
+ */
 
 public class Image
 {
-    public Image() {}
+    public Image()
+    {
+    }
 
     public Color[][] getImage(String fileName) throws IOException
     {
@@ -20,7 +22,7 @@ public class Image
 
     private BufferedImage getBufferedImage(String fileName) throws IOException
     {
-        return ImageIO.read(EnergyDetermination.class.getResourceAsStream(fileName));
+        return ImageIO.read(Image.class.getResourceAsStream(fileName));
     }
 
     private Color[][] getColorArrayFromImage(BufferedImage originalImage)
