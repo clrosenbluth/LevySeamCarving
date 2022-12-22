@@ -1,12 +1,16 @@
+import java.awt.*;
+
 public class SeamRemover
 {
+
+    // todo: pass in and mutate color arrays, not energy arrays
     public SeamRemover()
     {
     }
 
-    public double[][] removeHorizontalSeam(double[][] energy, int[] seam)
+    public Color[][] removeHorizontalSeam(Color[][] energy, int[] seam)
     {
-        double[][] newEnergy = new double[energy.length - 1][energy[0].length];
+        Color[][] newEnergy = new Color[energy.length - 1][energy[0].length];
         for (int col = 0; col < seam.length; col++)
         {
             for (int row = 0; row < seam[col]; row++)
@@ -21,9 +25,9 @@ public class SeamRemover
         return newEnergy;
     }
 
-    public double[][] removeVerticalSeam(double[][] energy, int[] seam)
+    public Color[][] removeVerticalSeam(Color[][] energy, int[] seam)
     {
-        double[][] newEnergy = new double[energy.length][energy[0].length - 1];
+        Color[][] newEnergy = new Color[energy.length][energy[0].length - 1];
         for (int row = 0; row < seam.length; row++)
         {
             int spot = seam[row];
