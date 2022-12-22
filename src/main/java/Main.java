@@ -20,9 +20,9 @@ public class Main
 
     // to consider: create a 2D array of pixel classes
 
-    public static void main(String[] args)
-    {
-        try
+    // Example:
+    /*
+    * try
         {
             Image imageMaker = new Image();
             EnergyDetermination energyDeterminer = new EnergyDetermination();
@@ -38,13 +38,13 @@ public class Main
             while (energy.length > desiredHeight)
             {
                 int[] seam = seamFinder.findVerticalSeam(energy);
-                energy = seamRemover.removeVerticalSeam(energy);
+                energy = seamRemover.removeVerticalSeam(energy, seam);
             }
 
             while (energy[0].length > desiredWidth)
             {
                 int[] seam = seamFinder.findHorizontalSeam(energy);
-                energy = seamRemover.removeHorizontalSeam(energy);
+                energy = seamRemover.removeHorizontalSeam(energy, seam);
             }
 
             Color[][] newImage = imageMaker.createImage(energy);
@@ -52,7 +52,10 @@ public class Main
         } catch (Exception e)
         {
             e.printStackTrace();
-        }
+        }*/
+
+    public static void main(String[] args)
+    {
     }
 
 }

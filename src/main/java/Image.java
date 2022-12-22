@@ -22,7 +22,7 @@ public class Image
 
     private BufferedImage getBufferedImage(String fileName) throws IOException
     {
-        return ImageIO.read(EnergyDetermination.class.getResourceAsStream(fileName));
+        return ImageIO.read(Image.class.getResourceAsStream(fileName));
     }
 
     private Color[][] getColorArrayFromImage(BufferedImage originalImage)

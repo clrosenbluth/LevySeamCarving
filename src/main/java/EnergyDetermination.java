@@ -39,9 +39,9 @@ public class EnergyDetermination
             {
                 int energy;
                 if (i == 0
-                        || j == 0
-                        || i == width - 1
-                        || j == height - 1)
+                    || j == 0
+                    || i == width - 1
+                    || j == height - 1)
                 {
                     energy = maxPossibleEnergy;
                 } else
