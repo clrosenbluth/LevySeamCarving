@@ -10,8 +10,9 @@ public class SeamFinder
 
     public int[] findVerticalSeam(double[][] energy)
     {
-        int numRows = energy.length;
-        int numCols = energy[0].length;
+        int numCols = energy.length;
+//        System.out.println(numRows);
+        int numRows = energy[0].length;
 
         double[][] map = createVerticalEnergyMap(energy);
         int[] minSeam = new int[numRows];
