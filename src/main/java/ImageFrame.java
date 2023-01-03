@@ -8,7 +8,7 @@ import java.io.IOException;
 public class ImageFrame extends JFrame {
 
     private final JLabel imageLabel;
-    private ImageIcon original;
+    private BufferedImage original;
     private Image imageMaker = new Image();
     private EnergyDetermination energyDeterminer = new EnergyDetermination();
     private SeamFinder seamFinder = new SeamFinder();
@@ -71,7 +71,7 @@ public class ImageFrame extends JFrame {
         // add code here to load the image into your seam carver code
         ImageIcon imageIcon = new ImageIcon(image);
         imageLabel.setIcon(imageIcon);
-        original = imageIcon;
+        original = image;
 
         setSize(image.getWidth(null), image.getHeight(null));
         pack();
@@ -79,13 +79,11 @@ public class ImageFrame extends JFrame {
 
     private void setSeamImageSize(int width, int height) {
         // generate a newImage with the new width and height
-        Color[][] image = imageMaker.getImageFromBufferedImage((BufferedImage) original.getImage());
+        Color[][] image = imageMaker.getImageFromBufferedImage(original);
         double[][] energy;
 
         while (image[0].length > width)
         {
-            System.out.println(image.length);
-            System.out.println(image[0].length);
             energy = energyDeterminer.calculateEnergy(image);
             int[] seam = seamFinder.findVerticalSeam(energy);
             image = seamRemover.removeVerticalSeam(image, seam);
@@ -94,8 +92,8 @@ public class ImageFrame extends JFrame {
         while (image.length > height)
         {
             energy = energyDeterminer.calculateEnergy(image);
-            int[] seam = seamFinder.findVerticalSeam(energy);
-            image = seamRemover.removeVerticalSeam(image, seam);
+            int[] seam = seamFinder.findHorizontalSeam(energy);
+            image = seamRemover.removeHorizontalSeam(image, seam);
         }
 
         BufferedImage newImage = imageMaker.getBufferedImageFromArray(image);

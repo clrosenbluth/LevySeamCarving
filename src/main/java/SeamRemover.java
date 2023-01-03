@@ -3,7 +3,6 @@ import java.awt.*;
 public class SeamRemover
 {
 
-    // todo: pass in and mutate color arrays, not energy arrays
     public SeamRemover()
     {
     }
