@@ -10,8 +10,8 @@ public class SeamFinder
 
     public int[] findVerticalSeam(double[][] energy)
     {
-        int numRows = energy.length;
         int numCols = energy[0].length;
+        int numRows = energy.length;
 
         double[][] map = createVerticalEnergyMap(energy);
         int[] minSeam = new int[numRows];
@@ -23,8 +23,8 @@ public class SeamFinder
         for (int row = numRows - 2; row >= 0; row--)
         {
             int bottomRow = minSeam[row + 1];
-            int left = bottomRow == numCols ? numCols : bottomRow - 1;
-            int right = bottomRow == 0 ? 0 : bottomRow + 1;
+            int right = bottomRow == numCols ? numCols : bottomRow + 1;
+            int left = bottomRow == 0 ? 0 : bottomRow - 1;
             minSeam[row] = bottomRow - calculateOffset(
                     map[row][left],
                     map[row][bottomRow],

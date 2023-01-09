@@ -20,6 +20,25 @@ public class Image
         return getColorArrayFromImage(image);
     }
 
+    public Color[][] getImageFromBufferedImage(BufferedImage image)
+    {
+        return getColorArrayFromImage(image);
+    }
+
+    public BufferedImage getBufferedImageFromArray(Color[][] image)
+    {
+        BufferedImage bufferedImage = new BufferedImage(image[0].length, image.length,
+                BufferedImage.TYPE_INT_RGB);
+
+        for (int y = 0; y < image.length; y++) {
+            for (int x = 0; x < image[y].length; x++) {
+                bufferedImage.setRGB(x, y, image[y][x].getRGB());
+            }
+        }
+
+        return bufferedImage;
+    }
+
     private BufferedImage getBufferedImage(String fileName) throws IOException
     {
         return ImageIO.read(Image.class.getResourceAsStream(fileName));
@@ -29,12 +48,12 @@ public class Image
     {
         int width = originalImage.getWidth();
         int height = originalImage.getHeight();
-        Color[][] colors = new Color[width][height];
-        for (int i = 0; i < colors.length; i++)
+        Color[][] colors = new Color[height][width];
+        for (int y = 0; y < colors.length; y++)
         {
-            for (int j = 0; j < colors[0].length; j++)
+            for (int x = 0; x < colors[0].length; x++)
             {
-                colors[i][j] = new Color(originalImage.getRGB(i, j));
+                colors[y][x] = new Color(originalImage.getRGB(x, y));
             }
         }
         return colors;

@@ -29,31 +29,31 @@ public class EnergyDetermination
     {
         maxEnergy = Double.MIN_VALUE;
         minEnergy = Double.MAX_VALUE;
-        int width = image.length;
-        int height = image[0].length;
+        int width = image[0].length;
+        int height = image.length;
 
         int[][] brightnessArray = new int[width][height];
-        for (int i = 0; i < width; i++)
+        for (int y = 0; y < height; y++)
         {
-            for (int j = 0; j < height; j++)
+            for (int x = 0; x < width; x++)
             {
                 int energy;
-                if (i == 0
-                    || j == 0
-                    || i == width - 1
-                    || j == height - 1)
+                if (y == 0
+                    || x == 0
+                    || y == height - 1
+                    || x == width - 1)
                 {
                     energy = maxPossibleEnergy;
                 } else
                 {
-                    Color left = image[i - 1][j];
-                    Color right = image[i + 1][j];
-                    Color upper = image[i][j - 1];
-                    Color lower = image[i][j + 1];
+                    Color left = image[y - 1][x];
+                    Color right = image[y + 1][x];
+                    Color upper = image[y][x - 1];
+                    Color lower = image[y][x + 1];
 
                     energy = calculateCellEnergy(left, right, upper, lower);
                 }
-                brightnessArray[i][j] = energy;
+                brightnessArray[x][y] = energy;
                 maxEnergy = Math.max(maxEnergy, energy);
                 minEnergy = Math.min(minEnergy, energy);
             }
@@ -63,28 +63,28 @@ public class EnergyDetermination
 
     private double[][] getEnergy(int[][] brightness)
     {
-        int width = brightness.length;
-        int height = brightness[0].length;
+        int width = brightness[0].length;
+        int height = brightness.length;
         double[][] energy = new double[width][height];
 
-        for (int i = 0; i < width; i++)
+        for (int y = 0; y < height; y++)
         {
-            for (int j = 0; j < height; j++)
+            for (int x = 0; x < width; x++)
             {
                 double color;
-                if (i == 0
-                        || j == 0
-                        || i == width - 1
-                        || j == height - 1)
+                if (y == 0
+                        || x == 0
+                        || y == height - 1
+                        || x == width - 1)
                 {
                     color = 255;
                 } else
                 {
-                    color = (((brightness[i][j] - minEnergy)
+                    color = (((brightness[y][x] - minEnergy)
                             / (maxEnergy - minEnergy))
                             * 255);
                 }
-                energy[i][j] = color;
+                energy[x][y] = color;
             }
         }
 
